@@ -1,7 +1,7 @@
 // This assignment is inspired by a problem on Exercism (https://exercism.org/tracks/javascript/exercises/etl) that demonstrates Extract-Transform-Load using Scrabble's scoring system. 
 
 const input = require("readline-sync");
-
+let userWord = "";
 const oldPointStructure = {
   1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
   2: ['D', 'G'],
@@ -33,18 +33,69 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble! Enter a word:");
+   console.log("Let's play some scrabble!");
+   userWord = input.question("Input a word to score: ");
+   console.log(oldScrabbleScorer(userWord));
+   return userWord;
 };
 
-let simpleScorer;
+function simpleScorer(word) {
+   
+   let simpleScore = word.length;
+   return simpleScore;
+};
 
-let vowelBonusScorer;
+function vowelBonusScorer (word) {
+   const vowels = ["A", "E", "I", "O", "U"];
+   word = word.toUpperCase();
+   let vowelScore = 0;
+   for (i = 0; i < word.length; i++){
+      if (vowels.includes(word[i])){
+         vowelScore = vowelScore + 3;
+      }
+      else {
+         vowelScore = vowelScore + 1;
+      }
+   }
+   return vowelScore;
+}
 
-let scrabbleScorer;
 
-const scoringAlgorithms = [];
+function scrabbleScorer (word) {
+   return 1;
+};
 
-function scorerPrompt() {}
+const scoringAlgorithms = [
+   {
+      name: "Simple Scorer",
+      description: "Each letter is worth 1 point.",
+      scorerFunction: simpleScorer,
+   }, 
+   {
+      name: "Bonus Vowels",
+      description: "Vowels are 3 pts, consonants are 1 pt.",
+      scorerFunction: vowelBonusScorer,
+   }, 
+   {
+      name: "Scrabble",
+      description: "The traditional scoring algorithm",
+      scorerFunction: scrabbleScorer,
+   },
+];
+
+function scorerPrompt() {
+   console.log(`There are three word-scoring methods available: 
+   0: Simple Scorer
+   1: Bonus Vowels 
+   2: Scrabble.
+   Select a scoring method by entering the corresponding number.`);
+   let scoringSelection = input.question("Which one would you like?: ");
+
+   if (!(NaN === scoringSelection) && scoringSelection >= 0 && scoringSelection <= 2) {
+      console.log(`You've Selected: ${scoringAlgorithms[scoringSelection].name}.
+      Your Score: ${scoringAlgorithms[scoringSelection].scorerFunction(userWord)}` )
+   }
+}
 
 function transform() {};
 
