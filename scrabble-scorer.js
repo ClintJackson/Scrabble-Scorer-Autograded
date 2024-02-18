@@ -62,7 +62,19 @@ function vowelBonusScorer (word) {
 
 
 function scrabbleScorer (word) {
-   return 1;
+   word = word.toLowerCase();
+   let score = 0;
+   //plz dnt forget
+   //newPointStructure[word[i]] is using word[i] as a key. 
+   //instead of looping, as originally planned, you simply access via index. 
+   //so newPointStructure's key is access via index, which is a letter, which is word[i].
+   //this spits out the value paired with that. 
+   //mission accomplished
+   for (let i = 0; i < word.length; i++) {
+      score += newPointStructure[word[i]];
+      }
+   
+   return score;
 };
 
 const scoringAlgorithms = [
@@ -97,13 +109,44 @@ function scorerPrompt() {
    }
 }
 
-function transform() {};
+function transform(oldStructure) {
+   let newStructure = {};
+   /*I'm going to forget this:
+      It's looping through.  
+      score in old point structure below is the key for oldStructure object.
+      The value assigned to the score (key) is an array. We want to access each of the values in the array. 
+      oldStructure[score] is the array. So, assign it to a variable to work with it. "originalArray"
 
-let newPointStructure;
+      
+      Now we want to loop through the contents of the array, stored in originalArray. 
+      Remember: "in" is in Object. "of" is of array. 
+      We want to work with each individual letter. So, access via: 
+         let letter of originalArray
+      Now build the new structure by assigning it via letter. 
+      newStructure[letter] creates a new key in newStructure.
+         -the key is whatever "letter" is during this iteration of this array.
+         -the paired value with this new key is "score" from the loop going through the object.
+      I'm still not 100% sure why "Number" is working...except that I think keys are strings?
+         so number changes them to data type: number? otherwise they're string keys paired with string values still?
+            -i'm gonna go with that. 
+
+
+       
+   */
+   for (let score in oldStructure) {
+      let originalArray = oldStructure[score];//the array is now available for independent work.
+      for (let letter of originalArray) {
+         newStructure[letter.toLowerCase()] = Number(score);
+      }
+      }
+      return newStructure;
+};
+
+let newPointStructure = transform(oldPointStructure);
 
 function runProgram() {
    initialPrompt();
-   
+   scorerPrompt();
 }
 
 // Don't write any code below this line //
